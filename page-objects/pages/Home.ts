@@ -1,0 +1,53 @@
+import { Page } from '@playwright/test';
+import { Header } from '../components/Header';
+
+export class Home {
+    readonly page: Page;
+    readonly header: Header;
+
+    constructor(page: Page) {
+        this.page = page;
+        this.header = new Header(this.page);
+    }
+
+    async navigateToHomePage() {
+        await this.page.goto('https://www.liverpool.com.mx/tienda/home', {
+            headers: {
+                'Accept-Language': 'es-MX',
+                'Referer': 'https://www.google.com/',
+            },
+        });
+    }
+
+    async verifyTitle() {
+        const title = await this.page.title();
+        return title === 'Liverpool | Envío gratis en todas tus compras.';
+    }
+
+    async clickLogo() {
+        await this.header.clickLogo();
+    }
+
+    async searchProduct(productName: string) {
+        await this.header.searchProduct(productName);
+    }
+
+    async openLoginDropdown() {
+        const isDropdownVisible = await this.header.loginField();
+        return isDropdownVisible;
+    }
+
+    async openFavorites() {
+        await this.header.favoritesField();
+    }
+
+    async openCart() {
+        await this.header.cartField();
+    }
+
+    getHeader() {
+        return this.header;
+    }
+}
+
+export default Home;
