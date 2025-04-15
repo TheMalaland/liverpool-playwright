@@ -1,0 +1,29 @@
+{
+  "name": "liverpool-playwright",
+  "version": "1.0.0",
+  "description": "A Playwright project for testing the Liverpool application.",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "lint": "eslint .",
+    "build": "tsc"
+  },
+  "keywords": [
+    "playwright",
+    "testing",
+    "automation"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "playwright": "^1.0.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.51.1",
+    "eslint": "^7.0.0",
+    "typescript": "^4.0.0"
+  },
+  "directories": {
+    "test": "tests"
+  }
+}
