@@ -24,16 +24,27 @@ export class Home {
         return title === 'Liverpool | Envío gratis en todas tus compras.';
     }
 
+    async liverpoolLogo() {
+        const logo = await this.header.liverpoolLogo();
+        return logo;
+    }
+
     async clickLogo() {
         await this.header.clickLogo();
+        const currentUrl = await this.page.url();
+        return currentUrl === 'https://www.liverpool.com.mx/tienda/home';
     }
 
     async searchProduct(productName: string) {
         await this.header.searchProduct(productName);
     }
 
+    async loginfieldvisible() {
+        const loginfield = await this.header.loginFieldClickable();
+    }
+
     async openLoginDropdown() {
-        const isDropdownVisible = await this.header.loginField();
+        const isDropdownVisible = await this.header.loginFieldVisibleDropdownList();
         return isDropdownVisible;
     }
 

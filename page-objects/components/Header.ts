@@ -7,23 +7,42 @@ export class Header {
         this.page = page;
     }
 
+    async liverpoolLogo() {
+        const logo = this.page.locator('img[alt="Liverpool Logo"]');
+        await logo.waitFor({ state: 'visible' });
+        return logo.isVisible();
+    }
+
     async clickLogo() {
         const logo = this.page.locator('img[alt="Liverpool Logo"]');
         await logo.click();
     }
 
     async productCategoryList() {
-        //here im just testing the page locators to see if they are correct
+
+                //here im just testing the page locators to see if they are correct
 
         //const categoryList = this.page.locator('text="Categorías"');
         //const categoryList = this.page.locator('.a-header__strongLink.nav-desktop-menu-action.pr-3');
         //const categoryList = this.page.locator('span:has-text("Categorías")')
+        // Localiza el elemento "Categorías"
+        const categoryList = this.page.locator('div.o-navDesktop ul li span.a-header__strongLink');
 
-        const categoryList = this.page.locator("div.o-navDesktop ul li span.a-header__strongLink");
-        // Espera a que el elemento esté visible antes de hacer clic
+        // Espera a que el elemento esté visible
+        await categoryList.waitFor({ state: 'visible' });
+
+        // Verifica que el elemento esté habilitado (clicable)
+        const isEnabled = await categoryList.isEnabled();
+        if (!isEnabled) {
+            throw new Error('El elemento "Categorías" no está habilitado para hacer clic.');
+        }
+
+        // Haz clic en el elemento
         await categoryList.click();
-    }
 
+        // Devuelve si el elemento sigue siendo visible después del clic
+        return categoryList.isVisible();
+    }
 
     async searchProduct(productName: string) {
         const searchInput = this.page.locator('input[label="Buscar..."]');
@@ -48,11 +67,35 @@ export class Header {
         }
         
     }
-    async loginField() {
+
+    async loginFieldClickable() {
         // Localiza y haz clic en el botón "Iniciar sesión"
         const loginButton = this.page.locator('p.user-button');
         await loginButton.click();
 
+
+        await this.page.waitForNavigation({ waitUntil: 'networkidle' });
+        // Verifica que la URL cambie a la página de inicio de sesión
+        const currentUrl = this.page.url();
+        if (!currentUrl.includes('login')) {
+            throw new Error(`La redirección a la página de inicio de sesión falló. URL actual: ${currentUrl}`);
+        }
+
+        // Verifica que el título de la página cambie a "Iniciar sesión"
+        await this.page.waitForNavigation({ waitUntil: 'networkidle' });
+        const title = await this.page.title();
+        if (!title.includes('Iniciar sesión')) {
+            throw new Error(`El título de la página no es "Iniciar sesión". Título actual: ${title}`);
+        }
+
+        
+    }
+
+    async loginFieldVisibleDropdownList() {
+
+        // Localiza y haz clic en el botón "Iniciar sesión"
+        const loginButton = this.page.locator('p.user-button');
+        await loginButton.hover();
         // Verifica que el menú desplegable esté visible
         const dropdownMenu = this.page.locator('div.dropdownMenu-opt');
         await dropdownMenu.waitFor({ state: 'visible' });
@@ -81,8 +124,5 @@ export class Header {
         // Haz clic en el botón del carrito de compras
         await cartButton.click();
     }
-
-
-
 
 }

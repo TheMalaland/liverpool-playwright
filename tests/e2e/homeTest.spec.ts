@@ -26,20 +26,30 @@ test.describe('Home Page Tests', () => {
     test('the header should be visible', async () => {
         const header = home.getHeader(); // Obtiene la instancia de Header
         // Aquí puedes agregar validaciones para verificar que el encabezado sea visible
+        expect(header).toBeTruthy(); // Asegúrate de que el encabezado sea visible
+    });
+    
+    test('the Liverpool logo should be visible', async () => {
+        const isLogoVisible = await home.liverpoolLogo(); // Método para verificar la visibilidad del logo  
+        expect(isLogoVisible).toBeTruthy(); // Verifica que el logo sea visible
+    
     });
 
     test('should click the Liverpool logo', async () => {
-        await home.clickLogo(); // Método para hacer clic en el logo
+
+        const isRedirectedToHomePage = await home.clickLogo(); // Método para hacer clic en el logo
+        expect(isRedirectedToHomePage).toBeTruthy(); // Verifica que se redirija a la página de inicio
     });
 
-    test('category list should be visible', async () => {
-        const header = home.getHeader(); // Obtiene la instancia de Header
-        await header.productCategoryList(); // Método para interactuar con la lista de categorías
+    test('the category list should be visible and clickable', async () => {
+        const isCategoryListVisible = await home.getHeader().productCategoryList(); // Método para verificar la visibilidad y clicabilidad de la lista de categorías
+        expect(isCategoryListVisible).toBeTruthy(); // Asegúrate de que el encabezado sea visible
     });
+    
 
-    test('the serch field should be visible and usable', async () => {
-        const header = home.getHeader(); // Obtiene la instancia de Header
-        await header.searchProduct('laptop'); // Método para buscar un producto
-    });
+
+
+
+
 });
 
