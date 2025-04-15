@@ -45,11 +45,27 @@ test.describe('Home Page Tests', () => {
         const isCategoryListVisible = await home.getHeader().productCategoryList(); // Método para verificar la visibilidad y clicabilidad de la lista de categorías
         expect(isCategoryListVisible).toBeTruthy(); // Asegúrate de que el encabezado sea visible
     });
+
+    test('the search field should be visible, writable, and functional', async () => {
+        const searchProduct = 'Laptop';
+        await home.searchProduct(searchProduct); // Método para buscar un producto
+        const currentUrl = await sharedPage.url(); // Obtiene la URL actual
+
+        // Normaliza las cadenas a minúsculas antes de compararlas
+        expect(currentUrl.toLowerCase()).toContain(searchProduct.toLowerCase()); // Verifica que la URL contenga el nombre del producto buscado
+
+        const title = await sharedPage.title(); // Obtiene el título de la página
+        expect(title.toLowerCase()).toContain(searchProduct.toLowerCase()); // Verifica que el título contenga el término buscado
+    });
+
+    test('the login field should be visible and clickable', async () => {
+        const isLoginFieldVisible = await home.loginfield(); // Método para verificar la visibilidad del campo de inicio de sesión
+        
+        expect(isLoginFieldVisible).toBeTruthy(); // Verifica que el campo de inicio de sesión sea visible
     
-
-
-
-
+        const loginPageUrl = await home.loginFieldclick(); // Método para hacer clic en el campo de inicio de sesión
+        expect(loginPageUrl).toContain('login'); // Verifica que la URL contenga 'login'
+    });
 
 });
 

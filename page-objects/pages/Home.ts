@@ -39,8 +39,14 @@ export class Home {
         await this.header.searchProduct(productName);
     }
 
-    async loginfieldvisible() {
-        const loginfield = await this.header.loginFieldClickable();
+    async loginfield() {
+        const loginfield = await this.header.loginFieldVisible();
+        return loginfield;
+    }
+
+    async loginFieldclick() {
+        const loginField = await this.header.loginFieldClickable();
+        return loginField;
     }
 
     async openLoginDropdown() {

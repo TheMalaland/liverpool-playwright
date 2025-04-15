@@ -48,24 +48,41 @@ export class Header {
         const searchInput = this.page.locator('input[label="Buscar..."]');
         await searchInput.fill(productName);
         await searchInput.press('Enter');
+
         // Espera a que la página de resultados de búsqueda se cargue
         await this.page.waitForNavigation({ waitUntil: 'networkidle' });
-        // Verifica que la URL contenga el nombre del producto buscado
+
+        // Verifica que la URL contenga el nombre del producto buscado (normalizando las cadenas)
         const currentUrl = this.page.url();
-        if (!currentUrl.includes(productName)) {
+        if (!currentUrl.toLowerCase().includes(productName.toLowerCase())) {
             throw new Error(`La búsqueda de "${productName}" no se realizó correctamente. URL actual: ${currentUrl}`);
         }
-        // Verifica que el título de la página contenga el nombre del producto buscado  
+
+        // Verifica que el título de la página contenga el nombre del producto buscado
         const title = await this.page.title();
         if (!title.toLowerCase().includes(productName.toLowerCase())) {
             throw new Error(`El título de la página no contiene "${productName}". Título actual: ${title}`);
         }
+
         // Verifica que el campo de búsqueda contenga el texto buscado
         const searchValue = await searchInput.inputValue();
         if (searchValue !== productName) {
             throw new Error(`El campo de búsqueda no contiene "${productName}". Valor actual: ${searchValue}`);
         }
-        
+    }
+
+    async loginFieldVisible() {
+        // Localiza el botón "Iniciar sesión" y espera a que esté visible
+        const loginButton = this.page.locator('p.user-button');
+        await loginButton.waitFor({ state: 'visible' });
+
+        // Verifica que el botón esté habilitado (clicable)
+        const isEnabled = await loginButton.isEnabled();
+        if (!isEnabled) {
+            throw new Error('El botón "Iniciar sesión" no está habilitado para hacer clic.');
+        }
+
+        return loginButton.isVisible();
     }
 
     async loginFieldClickable() {
@@ -88,6 +105,7 @@ export class Header {
             throw new Error(`El título de la página no es "Iniciar sesión". Título actual: ${title}`);
         }
 
+        return currentUrl;
         
     }
 
