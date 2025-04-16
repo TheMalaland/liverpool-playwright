@@ -54,7 +54,7 @@ export class Home {
         return isDropdownVisible;
     }
 
-    async openFavorites() {
+    async myFavorites() {
         await this.header.favoritesField();
     }
 

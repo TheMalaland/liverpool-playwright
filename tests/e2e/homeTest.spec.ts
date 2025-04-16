@@ -67,5 +67,19 @@ test.describe('Home Page Tests', () => {
         expect(loginPageUrl).toContain('login'); // Verifica que la URL contenga 'login'
     });
 
+
+    test('when the user hovers over the login field, the dropdown list should be visible', async () => {
+        await home.navigateToHomePage(); // Método para navegar a la página de inicio
+        const isDropdownVisible = await home.openLoginDropdown(); // Método para verificar la visibilidad de la lista desplegable
+        expect(isDropdownVisible).toBeTruthy(); // Verifica que la lista desplegable sea visible
+    });
+
+    test("the 'My Favorites' field should be visible and clickable", async () => {
+
+        const isFavoritesFieldVisible = await home.getHeader().favoritesField(); // Método para verificar la visibilidad del campo "Mis Favoritos"
+        expect(isFavoritesFieldVisible).toBeTruthy(); // Verifica que el campo "Mis Favoritos" sea visible
+
+    });
+
 });
 

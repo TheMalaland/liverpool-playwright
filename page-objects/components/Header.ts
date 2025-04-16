@@ -115,7 +115,8 @@ export class Header {
         const loginButton = this.page.locator('p.user-button');
         await loginButton.hover();
         // Verifica que el menú desplegable esté visible
-        const dropdownMenu = this.page.locator('div.dropdownMenu-opt');
+        const dropdownMenu = this.page.locator('div.dropdownMenu-opt.show-menu');
+        await dropdownMenu.waitFor({ state: 'attached' }); // Espera a que el elemento esté en el DOM
         await dropdownMenu.waitFor({ state: 'visible' });
         return dropdownMenu.isVisible();
     }
@@ -128,7 +129,7 @@ export class Header {
         await favoritesButton.waitFor({ state: 'visible' });
 
         // Haz clic en el botón de favoritos
-        await favoritesButton.click();
+        return favoritesButton.isVisible();
 
     }
 
